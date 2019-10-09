@@ -12,19 +12,22 @@
 
     if(isset($_POST["name"]) && isset($_POST['password'])) {
         require_once "utilities.inc.php";
-        $encPW = hash("sha256", sanitizeInputData($_POST["password"]));
+        
         
         $db = new LoginPDO();
-        $userPW = $db->getLoginPassword(sanitizeInputData($_POST["name"]));
-        if($encPW === $userPW) {
+        $isAuthenticatedUser = $db->authenticateLogin(sanitizeInputData($_POST["name"]), $_POST["password"] );
+        if($isAuthenticatedUser["authenticated"]) {
             date_default_timezone_set("US/Eastern");
-            setcookie("loggedIn", date("F d, Y h:i a", time()), date(time() + 600), '/');
+            setcookie("logInTime", date("F d, Y h:i a", time()), date(time() + 600), '/');
             $_SESSION["loggedIn"] = true;
+            $attendeeDB = new AttendeePDO();
+            $_SESSION["currentUser"] = $attendeeDB->getCurrentUser($isAuthenticatedUser["userID"]);
             header("Location: Events.php");
         } else {
-            var_dump($encPW);
-            var_dump($userPW);
+            echo "invalid login.";
         }
+    } else if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
+        echo "You are still logged in!";
     }
 ?>
 <html>

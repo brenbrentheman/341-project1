@@ -9,7 +9,7 @@
 
     session_name("events");
     session_start();
-
+    echo var_dump($_SESSION["currentUser"]["name"]);
     if(!isset($_SESSION["loggedIn"])) {
         header("Location: Login.php");
     }
