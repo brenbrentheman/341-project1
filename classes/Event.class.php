@@ -8,13 +8,39 @@
         private $numberallowed;
         private $venue;
 
-        function __construct($id, $eventName, $start, $end, $allowed, $venueName) {
-            $this->idevent = $id;
-            $this->name = $eventName;
-            $this->datestart = $start;
-            $this->dateend = $end;
-            $this->numberallowed = $allowed;
-            $this->venue = $venue;
+        public static function newEvent($idevent, $name, $datestart, $dateend, $numberallowed, $venue) {
+            $event = new self;
+            $event->idevent = $idevent;
+            $event->name = $name;
+            $event->datestart = $datestart;
+            $event->dateend = $dateend;
+            $event->numberallowed = $numberallowed;
+            $event->venue = $venue;
+            return $event;
+        }
+
+        function getID() {
+            return $this->idevent;
+        }
+
+        function getName() {
+            return $this->name;
+        }
+
+        function getStartDate() {
+            return $this->datestart;
+        }
+
+        function getEndDate() {
+            return $this->dateend;
+        }
+
+        function getNumberAllowed() {
+            return $this->numberallowed;
+        }
+
+        function getVenue() {
+            return $this->venue;
         }
     }
 

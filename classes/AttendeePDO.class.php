@@ -7,11 +7,17 @@
     class AttendeePDO extends PDODB {
 
         function getCurrentUser($userID) {
-            $stmt = $this->dbh->prepare("SELECT * FROM attendee WHERE idattendee = :id");
-            $stmt->execute(array("id"=>$userID));
-            $stmt->setFetchMode(PDO::FETCH_CLASS, "Attendee");
+            try{
+            
+                $stmt = $this->dbh->prepare("SELECT * FROM attendee WHERE idattendee = :id");
+                $stmt->execute(array("id"=>$userID));
+                $stmt->setFetchMode(PDO::FETCH_CLASS, "Attendee");
 
-            return $currentUser = $stmt->fetch();//get first row
+                return $currentUser = $stmt->fetch();//get first row
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
         }
         
     }
