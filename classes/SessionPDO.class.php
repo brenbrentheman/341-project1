@@ -16,8 +16,7 @@ require_once "PDODB.class.php";
             catch(PDOException $ex) {
                 die("There was a problem");
             }
-        }
-           
+        }  
 
     }
 ?>

@@ -1,4 +1,5 @@
-<?
+<?php
+    require_once "AttendeePDO.class.php";
     class Attendee {
         
         private $idattendee;
@@ -6,11 +7,39 @@
         private $password;
         private $role;
 
-        function __construct($id, $attendeeName, $pw, $attendeeRole) {
-            $this->idattendee = $id;
-            $this->name = $attendeeName;
-            $this->password = $pw;
-            $this->role = $attendeeRole;
+        public static function newAttendee($id, $name, $pw, $attendeeRole) {
+            $attendee = new self;
+            $attendee->idattendee = $id;
+            $attendee->name = $name;
+            $attendee->password = $pw;
+            $attendee->role = $attendeeRole;
+            return $attendee;
+        }
+
+        function getID() {
+            return $this->idattendee;
+        }
+
+        function getName() {
+            return $this->name;
+        }
+
+        function getPassword() {
+            return $this->password;
+        }
+
+        function getRole() {
+            return $this->role;
+        }
+
+        function getAllEventsForUser() {
+            $db = new AttendeePDO();
+            return $db->getAllEventsByID($this->idattendee);
+        }
+
+        function getAllSessionsForUser() {
+            $db = new AttendeePDO();
+            return $db->getAllSessionsbyID($this->idattendee);
         }
     }
 ?>

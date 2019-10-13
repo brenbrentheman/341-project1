@@ -41,6 +41,24 @@
         function getEvent() {
             return $this->event;
         }
+
+        function getEventName() {
+            require "EventsPDO.class.php";
+            $db = new EventsPDO();
+            return $db->getEventName($this->event)["name"];
+        }
+
+        function getSessionAsRow() {
+            return "<tr>
+            <td>{$this->idsession}</td>
+            <td>{$this->name}</td>
+            <td>{$this->getEventName()}</td>
+            <td>{$this->startdate}</td>
+            <td>{$this->enddate}</td>
+            <td>{$this->numberallowed}</td>
+            </tr>";
+        }
+
     }
 
 ?>

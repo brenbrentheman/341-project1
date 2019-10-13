@@ -42,6 +42,19 @@
         function getVenue() {
             return $this->venue;
         }
+
+        function getAsTableRow() {
+            require "Venue.class.php";
+            $venueName = Venue::getVenueByName($this->venue);
+            return "<tr>
+            <td>{$this->idevent}</td>
+            <td>{$this->name}</td>
+            <td>$venueName</td>
+            <td>{$this->datestart}</td>
+            <td>{$this->dateend}</td>
+            <td>{$this->numberallowed}</td>
+            </tr>";
+        }
     }
 
 ?>
