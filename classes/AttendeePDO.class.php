@@ -47,5 +47,17 @@
                 die("There was a problem");
             }
         }
+
+        function unregisterEventByUserID($eventID, $attendeeID) {
+            try {
+                $stmt = $this->dbh->prepare("DELETE FROM attendee_event WHERE event = :eventID AND attendee = :attendeeID");
+                $stmt->execute(array("eventID"=>$eventID, "attendeeID"=>$attendeeID));
+
+                return $stmt->rowCount();//get first row
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
         
     }

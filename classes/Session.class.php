@@ -43,7 +43,7 @@
         }
 
         function getEventName() {
-            require "EventsPDO.class.php";
+            require_once "EventsPDO.class.php";
             $db = new EventsPDO();
             return $db->getEventName($this->event)["name"];
         }
@@ -57,6 +57,12 @@
             <td>{$this->enddate}</td>
             <td>{$this->numberallowed}</td>
             </tr>";
+        }
+
+        public static function getAllSessions() {
+            require "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->getAllSessions();
         }
 
     }

@@ -14,9 +14,10 @@
     }
     
     require_once "utilities.inc.php";
-    
+    Header::buildHeader("All Events", false);
     $displayName = ucwords($_SESSION["currentUser"]->getName());
-    echo "<h1>Hi $displayName, your upcoming events:</h1>";
+    echo "<h1>Hi $displayName!</h1> 
+    <h2>Here are all of our upcoming events:</h2>";
 
     /*Get all events and all sessions*/
     $eventDB = new EventsPDO();
@@ -52,5 +53,6 @@
         echo $eventListing;
         echo $sessionsTable;
     }
+    Footer::buildFooter();
 
 ?>

@@ -41,5 +41,10 @@
             $db = new AttendeePDO();
             return $db->getAllSessionsbyID($this->idattendee);
         }
+
+        function unregisterEvent($eventID) {
+            $db = new AttendeePDO($eventID, $this->idattendee);
+            return $db->unregisterEventByUserID($eventID, $this->idattendee);
+        }
     }
 ?>

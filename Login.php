@@ -35,7 +35,7 @@
     <title>User Login</title>
 </head>
 <body>
-    <form id="sample" action="Login.php" method="post">
+    <form id="login" action="Login.php" method="post">
         Name: <input type="text" name="name">
         Password: <input type="text" name="password">
         <input type="submit" name="submit">

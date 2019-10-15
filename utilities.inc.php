@@ -35,3 +35,8 @@
         $reg= "/^[A-Za-z0-9]+$/";
         return preg_match($reg,$value);
     }
+
+    function numeric($value) {
+        $reg = "/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/";
+        return preg_match($reg,$value);
+    }

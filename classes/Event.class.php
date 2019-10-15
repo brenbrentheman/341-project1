@@ -55,6 +55,12 @@
             <td>{$this->numberallowed}</td>
             </tr>";
         }
+
+        public static function getAllEvents() {
+            require "EventsPDO.class.php";
+            $db = new EventsPDO();
+            return $db->getAllEvents();
+        }
     }
 
 ?>
