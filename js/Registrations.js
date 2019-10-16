@@ -48,7 +48,38 @@
 
     /* ADD EVENT - when we need to add an event */
     $("#add-event").on("click", function(){
-        
+        let event = $("#unregisteredEvents").val(); 
+        console.log(event);
+        $(".error,.success-alert").remove();//remove errors
+        if(event !== null && event !== "") {
+            let postData = {"add-event":[{"eventID":event}]};
+            $.ajax({url:"./form_handlers/Registration_Form_Handler.php", type: "POST", data: postData, success: 
+                function(data){
+                    let json = JSON.parse(data);
+                    let rowsAffected = json["rowsAffected"];
+                    if(rowsAffected > 0) {
+                        let tableRow = json["tableRow"];
+                        $("#events-table tbody").append(tableRow);
+                        let cloneToMove = $("#unregisteredEvents option[value='"+event+"']").clone();
+                        $("#unregisteredEvents option[value='"+event+"']").remove();
+                        $("#unregisteredEvents").prop("selectedIndex", 0);
+                        $("#userEvents").append(cloneToMove);
+                        $("#add-event").after("<span id='session-add-success' class='success-alert'>Event registered successfully!</span>");
+
+                        /*Add now available sessions to the unregistered sessions select */
+                        let newSessions = json["newSessionsOptions"];
+                        for(var i = 0, len = newSessions.length; i < len; i++){
+                            $("#unregisteredSessions").append(newSessions[i]);
+                        }
+
+                    } else {
+                        $("#add-event").after("<span id='event-unregister-fail' class='error'>Something went wrong adding your registration!</span>");
+                    }
+                }
+            });
+        } else {
+            $("#add-event").after("<span class='error'>No Event Selected!</span>");
+        }
     });
 
     /*UNREGISTER SESSION*/

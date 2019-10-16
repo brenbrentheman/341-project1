@@ -83,5 +83,17 @@
                 die("There was a problem");
             }
         }
+
+        function registerEventByUserID($eventID, $attendeeID) {
+            try {/*We insert 1 as the paid value (we are assuming they have paid for this)*/
+                $stmt = $this->dbh->prepare("INSERT INTO attendee_event VALUES (:eventID, :attendeeID, 1)");
+                $stmt->execute(array("eventID"=>$eventID, "attendeeID"=>$attendeeID));
+
+                return $stmt->rowCount();//get first row
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
         
     }

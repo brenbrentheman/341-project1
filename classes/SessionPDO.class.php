@@ -34,5 +34,21 @@ require_once "PDODB.class.php";
             }
         }
 
+        function getSessionsByEventID($eventID) {
+            try{
+                /*Get all our sessions for the events*/
+                $stmt = $this->dbh->prepare("SELECT * FROM session WHERE event = :eventID");
+                $stmt->execute(array("eventID"=>$eventID));
+                $stmt->setFetchMode(PDO::FETCH_CLASS, "Session");
+    
+                /*Store all sessions*/
+                $sessions = $stmt->fetchAll();//get all results
+                return $sessions;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
     }
 ?>

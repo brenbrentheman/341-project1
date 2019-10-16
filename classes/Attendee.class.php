@@ -62,5 +62,12 @@
             return $db->registerSessionByUserID($sessionID, $attendeeID);
             $db = null;//reset the connection
         }
+
+        function registerEvent($eventID, $attendeeID=null) {
+            $db = new AttendeePDO();
+            $attendeeID = $attendeeID === null ? $this->idattendee : $attendeeID;//work around for default paramter since you can't do $this->idattendee in the args
+            return $db->registerEventByUserID($eventID, $attendeeID);
+            $db = null;//reset the connection
+        }
     }
 ?>

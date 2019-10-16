@@ -30,7 +30,29 @@
 
     /*Handle incoming requests to add an event registration*/
     if(isset($_POST["add-event"])) {
-         
+        require_once "../classes/Event.class.php";
+        /*sanitize and validate data*/
+        $sanitizedData = sanitizeInputData($_POST["add-event"][0]["eventID"]);
+        $rowsAffected = $_SESSION["currentUser"]->registerEvent($sanitizedData);
+        $json["rowsAffected"] = $rowsAffected;
+        /*If inserted properly return the new table row with the number of rows affected*/
+        if($rowsAffected > 0) {
+            /*Get event formatted as table row*/
+            $newEvent = Event::getEventByID($sanitizedData);
+            $eventTableRow = $newEvent->getAsTableRow();
+            $json["tableRow"] = $eventTableRow;
+
+            /*Get new sessions available to the user as options for a select*/
+            require_once "../classes/Session.class.php";
+            $newSessions = Session::getSessionsByEventID($sanitizedData);
+            $sessionsAsOptions = array();
+            foreach($newSessions as $session) {
+                $sessionsAsOptions[] = "<option value='{$session->getID()}' data-eventForSession='{$session->getEvent()}'>{$session->getName()}</option>";
+            }
+            $json["newSessionsOptions"] = $sessionsAsOptions;
+        }
+        
+        echo json_encode($json);
     }
 
     /*Handle incoming requests to unregister a session*/

@@ -63,12 +63,21 @@
             require "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getAllSessions();
+            $db = null;
         }
 
         public static function getSessionByID($sessionID) {
             require "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getSessionByID($sessionID);
+            $db = null;
+        }
+
+        public static function getSessionsByEventID($eventID) {
+            require "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->getSessionsByEventID($eventID);
+            $db = null;
         }
 
     }

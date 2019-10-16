@@ -36,4 +36,19 @@ class EventsPDO extends PDODB {
             die("There was a problem");
         }
     }
+
+    function getEventByID($eventID) {
+        try{
+            /*Since we are returning as a table join venue to get the venue names rather than numbers. The events class is flexible enough to still et us use it this way*/
+            $stmt = $this->dbh->prepare("SELECT * FROM event WHERE idevent = :id");
+            $stmt->execute(array("id"=>$eventID));
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "Event");
+
+            $event = $stmt->fetch();//get first row
+            return $event;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
 }
