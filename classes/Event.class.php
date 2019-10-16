@@ -44,9 +44,9 @@
         }
 
         function getAsTableRow() {
-            require "Venue.class.php";
+            require_once "Venue.class.php";
             $venueName = Venue::getVenueByName($this->venue);
-            return "<tr>
+            return "<tr data-event='{$this->idevent}'>
             <td>{$this->idevent}</td>
             <td>{$this->name}</td>
             <td>$venueName</td>

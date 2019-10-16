@@ -7,7 +7,7 @@
         Registrations
     */
     /*Because the session var ["currentUser"] is an attendee object it must be called before session start*/
-    require "./classes/Attendee.class.php";
+    require_once "./classes/Attendee.class.php";
     /*Start the session */
     session_name("events");
     session_start();
@@ -33,7 +33,7 @@
 
     /*BUILD EVENTS*/
     echo "<h3>Your Registered Events:</h3>";
-    $eventsTable = "<table><thead><tr>
+    $eventsTable = "<table id='events-table'><thead><tr>
         <td>Event ID</td>
         <td>Name</td>
         <td>Venue</td>
@@ -53,25 +53,35 @@
     //print the events and select/option for events
     echo $eventsTable;
 
-    echo "<br /> <label for='userEvents'>Select one of your events to unregister: </label>" . $usersEventSelect . "<button id='unregister-event'>Unregister</button>";
+    echo "<br /> <label for='userEvents'>Select one of your events to unregister (<span class='warning'>WARNING! Unregistering an event will unregister you fromm all sessions for that event!</span>): </label>" . $usersEventSelect . "<button id='unregister-event'>Unregister</button>";
 
     /*Allow the user to add events they are not currently registered for*/
     $unRegisteredEventSelect = "<select id ='unregisteredEvents' name='unregisteredEvents'><option value ='' selected='true' disabled>Select an Event to Add...</option>";
-    /*Determine events not registered by user */
-    foreach($allAvailableEvents as $allEvent) {
-        foreach($userEvents as $userEvent){
-            if($allEvent->getID() !== $userEvent->getID()) {
+    /*Determine events not registered by user - this way is pretty ugly but it works pretty well*/
+    $userEventIDs = array();
+    foreach($userEvents as $userEvent){
+        $userEventIDs[] = $userEvent->getID();
+    }
+    $allEventsIDs = array();
+    foreach($allAvailableEvents as $allEvent){
+        $allEventsIDs[] = $allEvent->getID();
+    }
+    $unRegisteredEventIDs = array_diff($allEventsIDs, $userEventIDs);
+    if(!empty($unRegisteredEventIDs)){
+        foreach($allAvailableEvents as $allEvent) {
+            if(in_array($allEvent->getID(), $unRegisteredEventIDs)){
                 $unRegisteredEventSelect .= "<option value='{$allEvent->getID()}'>{$allEvent->getName()}</option>";
             }
         }
     }
+
     $unRegisteredEventSelect .= "</select>";
     echo "<br /> <label for='unregisteredEvents'>Select a new Event to add to you Registrations: </label>" . $unRegisteredEventSelect . "<button id='add-event'>Add</button>";
     /*END EVENTS*/
 
     /*BUILD SESSIONS */
     echo "<h3>Your Registered Event Sessions:</h3>";
-    $sessionsTable = "<table><thead><tr>
+    $sessionsTable = "<table id='sessions-table'><thead><tr>
         <td>Session ID</td>
         <td>Name</td>
         <td>Event</td>
@@ -92,19 +102,24 @@
     echo "<br /> <label for='userSessions'>Select a Session of yours to Unregister: </label>" . $usersSessionSelect  . "<button id='unregister-session'>Unregister</button>";
 
     /*Allow the user to add events they are not currently registered for*/
-    $unRegisteredSessionSelect = "<select id ='unregisteredSessions' name='unregisteredSessions'><option value ='' selected='true' disabled>Select an Event to Add...</option>";
-    /*Determine events not registered by user */
-    foreach($allAvailableSessions as $allSession) {//go through all sessions
-        foreach($userEvents as $event) {
-            if($allSession->getEvent() === $event->getID()) {//check if user is registered for an event, if they are check sessions otherwise pass
-                foreach($userSessions as $userSession){//compare already registered sessions against the current session
-                    if($allSession->getID() !== $userSession->getID()) {
-                        $unRegisteredSessionSelect .= "<option value='{$allSession->getID()}'>{$allSession->getName()}</option>";
-                    }
-                }
-            }
+    $unRegisteredSessionSelect = "<select id ='unregisteredSessions' name='unregisteredSessions'><option value ='' selected='true' disabled>Select a Session to Add...</option>";
+    
+    /*Determine events not registered by user - again ugly but works well*/
+    $userSessionIDs = array();
+    foreach($userSessions as $registeredSession) {
+        $userSessionIDs[] = $registeredSession->getID();
+    }
+    $allSessionsIDs = array();
+    foreach($allAvailableSessions as $allSession){
+        $allSessionsIDs[] = $allSession->getID();
+    }
+    $unRegisteredSessionIDs = array_diff($allSessionsIDs, $userSessionIDs);
+    foreach($allAvailableSessions as $allSession) {
+        if(in_array($allSession->getID(), $unRegisteredSessionIDs) && !(in_array($allSession->getEvent(), $unRegisteredEventIDs))) {
+            $unRegisteredSessionSelect .= "<option value='{$allSession->getID()}' data-eventForSession='{$allSession->getEvent()}'>{$allSession->getName()}</option>";
         }
     }
+
     $unRegisteredSessionSelect .= "</select>";
     echo "<br /> <label for='unregisteredSessions'>Select a new session to add to your Registrations: </label>" . $unRegisteredSessionSelect . "<button id='add-session'>Add</button>";
     /*END SESSIONS*/

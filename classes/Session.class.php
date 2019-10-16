@@ -49,7 +49,7 @@
         }
 
         function getSessionAsRow() {
-            return "<tr>
+            return "<tr data-session='{$this->idsession}'>
             <td>{$this->idsession}</td>
             <td>{$this->name}</td>
             <td>{$this->getEventName()}</td>
@@ -63,6 +63,12 @@
             require "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getAllSessions();
+        }
+
+        public static function getSessionByID($sessionID) {
+            require "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->getSessionByID($sessionID);
         }
 
     }

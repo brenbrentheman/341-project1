@@ -52,6 +52,30 @@
             try {
                 $stmt = $this->dbh->prepare("DELETE FROM attendee_event WHERE event = :eventID AND attendee = :attendeeID");
                 $stmt->execute(array("eventID"=>$eventID, "attendeeID"=>$attendeeID));
+                return $stmt->rowCount();//get first row
+            }
+            catch(PDOException $ex) {
+                var_dump($ex);
+                die("There was a problem");
+            }
+        }
+
+        function unregisterSessionByUserID($sessionID, $attendeeID) {
+            try {
+                $stmt = $this->dbh->prepare("DELETE FROM attendee_session WHERE session = :sessionID AND attendee = :attendeeID");
+                $stmt->execute(array("sessionID"=>$sessionID, "attendeeID"=>$attendeeID));
+
+                return $stmt->rowCount();//get first row
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        function registerSessionByUserID($sessionID, $attendeeID) {
+            try {
+                $stmt = $this->dbh->prepare("INSERT INTO attendee_session VALUES (:sessionID, :attendeeID)");
+                $stmt->execute(array("sessionID"=>$sessionID, "attendeeID"=>$attendeeID));
 
                 return $stmt->rowCount();//get first row
             }
