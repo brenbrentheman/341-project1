@@ -60,14 +60,18 @@
             require_once "EventsPDO.class.php";
             $db = new EventsPDO();
             return $db->getAllEvents();
-            $db = null;
         }
 
         public static function getEventByID($eventID) {
             require_once "EventsPDO.class.php";
             $db = new EventsPDO();
             return $db->getEventByID($eventID);
-            $db = null;
+        }
+
+        public static function getAllAttendeesForEvent($eventID) {
+            require_once "EventsPDO.class.php";
+            $db = new EventsPDO();
+            return $db->getAllAttendeesForEvent($eventID);
         }
     }
 

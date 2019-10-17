@@ -95,5 +95,37 @@
                 die("There was a problem");
             }
         }
+
+        function getAllUsers() {
+            try{
+                /*Get all our sessions for the events*/
+                $stmt = $this->dbh->query("SELECT * FROM attendee");
+                $stmt->setFetchMode(PDO::FETCH_CLASS, "Attendee");
+    
+                /*Store all sessions*/
+                $users = $stmt->fetchAll();
+                return $users;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        function getManagedEvents($userID) {
+            try{
+                require_once "Event.class.php";
+                /*Get all our sessions for the events*/
+                $stmt = $this->dbh->prepare("SELECT * FROM event JOIN manager_event ON event.idevent = manager_event.event WHERE manager = :userID");
+                $stmt->execute(array("userID"=>$userID));
+                $stmt->setFetchMode(PDO::FETCH_CLASS, "Event");
+    
+                /*Store all sessions*/
+                $events = $stmt->fetchAll();
+                return $events;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
         
     }

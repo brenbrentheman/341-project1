@@ -74,7 +74,7 @@
         }
 
         public static function getSessionsByEventID($eventID) {
-            require "SessionPDO.class.php";
+            require_once "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getSessionsByEventID($eventID);
             $db = null;

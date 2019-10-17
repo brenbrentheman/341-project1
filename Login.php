@@ -10,6 +10,8 @@
     session_name("events");
     session_start();
 
+    require_once "./classes/Header.class.php";
+    require_once "./classes/Footer.class.php";
     if(isset($_POST["name"]) && isset($_POST['password'])) {
         require_once "utilities.inc.php";
         

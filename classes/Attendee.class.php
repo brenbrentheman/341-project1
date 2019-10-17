@@ -69,5 +69,17 @@
             return $db->registerEventByUserID($eventID, $attendeeID);
             $db = null;//reset the connection
         }
+
+        public static function getAllUsers() {
+            $db = new AttendeePDO();
+            return $db->getAllUsers();
+            $db = null;//reset the connection
+        }
+
+        function getManagedEvents() {
+            $db = new AttendeePDO();
+            return $db->getManagedEvents($this->idattendee);
+            $db = null;//reset the connection
+        }
     }
 ?>

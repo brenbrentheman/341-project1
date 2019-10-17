@@ -22,7 +22,10 @@
     if(isset($_POST["unregister-event"])) {
         /*Sanitize and validate the data*/
         $sanitizedData = sanitizeInputData($_POST["unregister-event"][0]["eventID"]);
-        $rowsAffected = $_SESSION["currentUser"]->unregisterEvent($sanitizedData);//return number of rows affected
+        $rowsAffected = 0;
+        if(numeric($sanitizedData)) { 
+            $rowsAffected = $_SESSION["currentUser"]->unregisterEvent($sanitizedData);//return number of rows affected
+        }
         $json["rowsAffected"] = $rowsAffected;
 
         echo json_encode($json);
@@ -33,7 +36,10 @@
         require_once "../classes/Event.class.php";
         /*sanitize and validate data*/
         $sanitizedData = sanitizeInputData($_POST["add-event"][0]["eventID"]);
-        $rowsAffected = $_SESSION["currentUser"]->registerEvent($sanitizedData);
+        $rowsAffected = 0;
+        if(numeric($sanitizedData)) { 
+            $rowsAffected = $_SESSION["currentUser"]->registerEvent($sanitizedData);
+        } 
         $json["rowsAffected"] = $rowsAffected;
         /*If inserted properly return the new table row with the number of rows affected*/
         if($rowsAffected > 0) {
@@ -59,7 +65,10 @@
     if(isset($_POST["unregister-session"])) {
         /*sanitize and validate data*/
         $sanitizedData = sanitizeInputData($_POST["unregister-session"][0]["sessionID"]);
-        $rowsAffected = $_SESSION["currentUser"]->unregisterSession($sanitizedData);
+        $rowsAffected = 0;
+        if(numeric($sanitizedData)) { 
+            $rowsAffected = $_SESSION["currentUser"]->unregisterSession($sanitizedData);
+        }
         $json["rowsAffected"] = $rowsAffected;
 
         echo json_encode($json);
@@ -71,7 +80,10 @@
         require_once "../classes/Session.class.php";
         /*sanitize and validate data*/
         $sanitizedData = sanitizeInputData($_POST["add-session"][0]["sessionID"]);
-        $rowsAffected = $_SESSION["currentUser"]->registerSession($sanitizedData);
+        $rowsAffected = 0;
+        if(numeric($sanitizedData)) { 
+            $rowsAffected = $_SESSION["currentUser"]->registerSession($sanitizedData);
+        }
         $json["rowsAffected"] = $rowsAffected;
         /*If inserted properly return the new table row with the number of rows affected*/
         if($rowsAffected > 0) {

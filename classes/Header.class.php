@@ -8,7 +8,7 @@
     */
     class Header {
         public static function buildHeader($title, $includeJQuery) {
-            echo "<!DOCTYPE html>
+            $header = "<!DOCTYPE html>
                 <html lang='en'>
                     <head>
                         <meta charset='utf-8' />
@@ -16,9 +16,11 @@
                         <title>$title</title>
                         <!--<link rel='stylesheet' href='./css/style.css' />-->";
             if($includeJQuery)
-                echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>";
-            echo "</head>
+                $header .= "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>";
+            $header .= "</head>
                 <body>";
+            
+            echo $header;
         }
     }
 
