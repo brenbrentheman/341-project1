@@ -43,7 +43,7 @@
         </tr></thead><tbody>";
 
     /*Select/option of each registered event for the user. Used to */
-    $usersEventSelect = "<select id ='userEvents' name='userEvents'><option value ='' selected='true' disabled>Select an Event...</option>";
+    $usersEventSelect = "<select id ='userEvents' name='userEvents'><option value ='' selected='selected' disabled>Select an Event...</option>";
     foreach($userEvents as $event) {
         $eventsTable .= $event->getAsTableRow();
         $usersEventSelect .= "<option value='{$event->getID()}'>{$event->getName()}</option>";
@@ -56,7 +56,7 @@
     echo "<br /> <label for='userEvents'>Select one of your events to unregister (<span class='warning'>WARNING! Unregistering an event will unregister you fromm all sessions for that event!</span>): </label>" . $usersEventSelect . "<button id='unregister-event'>Unregister</button>";
 
     /*Allow the user to add events they are not currently registered for*/
-    $unRegisteredEventSelect = "<select id ='unregisteredEvents' name='unregisteredEvents'><option value ='' selected='true' disabled>Select an Event to Add...</option>";
+    $unRegisteredEventSelect = "<select id ='unregisteredEvents' name='unregisteredEvents'><option value ='' selected='selected' disabled>Select an Event to Add...</option>";
     /*Determine events not registered by user - this way is pretty ugly but it works pretty well*/
     $userEventIDs = array();
     foreach($userEvents as $userEvent){
@@ -89,7 +89,7 @@
         <td>End Date</td>
         <td>Capacity</td>
         </tr></thead><tbody>";
-    $usersSessionSelect = "<select id='userSessions' name='userSessions'><option value ='' selected='true' disabled>Select a Session...</option>";
+    $usersSessionSelect = "<select id='userSessions' name='userSessions'><option value ='' selected='selected' disabled>Select a Session...</option>";
     foreach($userSessions as $session) {
         $sessionsTable .= $session->getSessionAsRow();
         $usersSessionSelect .= "<option value='{$session->getID()}' data-eventForSession='{$session->getEvent()}'>{$session->getName()}</option>";
@@ -102,7 +102,7 @@
     echo "<br /> <label for='userSessions'>Select a Session of yours to Unregister: </label>" . $usersSessionSelect  . "<button id='unregister-session'>Unregister</button>";
 
     /*Allow the user to add events they are not currently registered for*/
-    $unRegisteredSessionSelect = "<select id ='unregisteredSessions' name='unregisteredSessions'><option value ='' selected='true' disabled>Select a Session to Add...</option>";
+    $unRegisteredSessionSelect = "<select id ='unregisteredSessions' name='unregisteredSessions'><option value ='' selected='selected' disabled>Select a Session to Add...</option>";
     
     /*Determine events not registered by user - again ugly but works well*/
     $userSessionIDs = array();

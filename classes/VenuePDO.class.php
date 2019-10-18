@@ -17,6 +17,19 @@ require_once "PDODB.class.php";
                 die("There was a problem");
             }
         }
+
+        function getAllVenues() {
+            try{
+                /*Get all our sessions for the events*/
+                $stmt = $this->dbh->query("SELECT * FROM venue");
+                $stmt->setFetchMode(PDO::FETCH_CLASS, "Venue");
+
+                return $stmt->fetchAll();
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
            
 
     }

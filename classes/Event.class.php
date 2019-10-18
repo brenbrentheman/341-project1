@@ -73,6 +73,12 @@
             $db = new EventsPDO();
             return $db->getAllAttendeesForEvent($eventID);
         }
+
+        public static function getAllEventManagers() {
+            require_once "EventsPDO.class.php";
+            $db = new EventsPDO();
+            return $db->getAllEventManagers();
+        }
     }
 
 ?>

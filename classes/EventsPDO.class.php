@@ -8,7 +8,6 @@ class EventsPDO extends PDODB {
 
     function getAllEvents() {
         try{
-            /*Since we are returning as a table join venue to get the venue names rather than numbers. The events class is flexible enough to still et us use it this way*/
             $stmt = $this->dbh->query("SELECT * FROM event");
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Event");
 
@@ -24,7 +23,6 @@ class EventsPDO extends PDODB {
 
     function getEventName($eventID) {
         try{
-            /*Since we are returning as a table join venue to get the venue names rather than numbers. The events class is flexible enough to still et us use it this way*/
             $stmt = $this->dbh->prepare("SELECT name FROM event WHERE idevent = :id");
             $stmt->execute(array("id"=>$eventID));
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -39,7 +37,6 @@ class EventsPDO extends PDODB {
 
     function getEventByID($eventID) {
         try{
-            /*Since we are returning as a table join venue to get the venue names rather than numbers. The events class is flexible enough to still et us use it this way*/
             $stmt = $this->dbh->prepare("SELECT * FROM event WHERE idevent = :id");
             $stmt->execute(array("id"=>$eventID));
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Event");
@@ -54,9 +51,21 @@ class EventsPDO extends PDODB {
 
     function getAllAttendeesForEvent($eventID) {
         try{
-            /*Since we are returning as a table join venue to get the venue names rather than numbers. The events class is flexible enough to still et us use it this way*/
             $stmt = $this->dbh->prepare("SELECT * FROM attendee JOIN attendee_event ON attendee.idattendee = attendee_event.attendee WHERE attendee_event.event = :id");
             $stmt->execute(array("id"=>$eventID));
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "Attendee");
+
+            $event = $stmt->fetchAll();//get first row
+            return $event;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function getAllEventManagers() {
+        try{
+            $stmt = $this->dbh->query("SELECT * FROM attendee WHERE role < 3");
             $stmt->setFetchMode(PDO::FETCH_CLASS, "Attendee");
 
             $event = $stmt->fetchAll();//get first row

@@ -8,7 +8,7 @@
     */
     class Footer {
         public static function buildFooter() {
-            echo "</body></html>";
+            echo "</div></body></html>";
         }
     }
 
