@@ -75,4 +75,114 @@ class EventsPDO extends PDODB {
             die("There was a problem");
         }
     }
+
+    function updateManager($eventID, $managerID) {
+        try{
+            $stmt = $this->dbh->prepare("UPDATE manager_event SET manager=:manager WHERE event = :event");
+            $stmt->execute(array("manager"=>$managerID, "event"=>$eventID));
+            $rows = $stmt->rowCount();//get rows affected
+            return $rows;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function insertEvent($name, $venue, $start, $end, $capacity) {
+        try{
+            $stmt = $this->dbh->prepare("INSERT INTO event (name, datestart, dateend, numberallowed, venue) VALUES (:name, :start, :end, :capacity, :venue)");
+            $stmt->execute(array("name"=>$name, "start"=>$start, "end"=>$end, "capacity"=>$capacity, "venue"=>$venue));
+            $id = $this->dbh->lastInsertId();//get rows affected
+            return $id;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function updateEvent($id,$name, $venue, $start, $end, $capacity) {
+        try{
+            $stmt = $this->dbh->prepare("UPDATE event SET name=:name, venue=:venue, datestart=:start,dateend=:end,numberallowed=:capacity WHERE idevent = :id");
+            $stmt->execute(array("id"=>$id,"name"=>$name, "start"=>$start, "end"=>$end, "capacity"=>$capacity, "venue"=>$venue));
+            $rows = $stmt->rowCount();//get rows affected
+            return $rows;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function insertManager($eventID, $managerID) {
+        try{
+            $stmt = $this->dbh->prepare("INSERT INTO manager_event VALUES (:event, :manager)");
+            $stmt->execute(array("event"=>$eventID, "manager"=>$managerID));
+            $rows = $stmt->rowCount();//get rows affected
+            return $rows;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function deleteEvent($eventID) {
+        try{
+            $stmt = $this->dbh->prepare("DELETE FROM event WHERE idevent = :event");
+            $stmt->execute(array("event"=>$eventID));
+            $rows = $stmt->rowCount();//get rows affected
+            return $rows;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function deleteManagerEvent($eventID) {
+        try{
+            $stmt = $this->dbh->prepare("DELETE FROM manager_event WHERE event = :event");
+            $stmt->execute(array("event"=>$eventID));
+            $rows = $stmt->rowCount();//get rows affected
+            return $rows;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function deleteAllSessionsForEvent($eventID) {
+        try{
+            $stmt = $this->dbh->prepare("DELETE FROM session WHERE event = :event");
+            $stmt->execute(array("event"=>$eventID));
+            $rows = $stmt->rowCount();//get rows affected
+            return $rows;
+        }
+        catch(PDOException $ex) {
+            var_dump($ex);
+            die("There was a problem");
+        }
+    }
+
+    function deleteFromAttendeeEvent($eventID) {
+        try{
+            $stmt = $this->dbh->prepare("DELETE FROM attendee_event WHERE event = :event");
+            $stmt->execute(array("event"=>$eventID));
+            $rows = $stmt->rowCount();//get rows affected
+            return $rows;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
+    function getAttendeeCount($eventID) {
+        try{
+            $stmt = $this->dbh->prepare("SELECT COUNT(attendee) FROM attendee_event WHERE event = :event");
+            $stmt->execute(array("event"=>$eventID));
+            $num = $stmt->fetch();//get rows affected
+            return $num;
+        }
+        catch(PDOException $ex) {
+            die("There was a problem");
+        }
+    }
+
 }

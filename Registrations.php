@@ -18,7 +18,7 @@
     }
     require_once "utilities.inc.php";
     /*Page header */
-    Header::buildHeader("Registrations", true);
+    Header::buildHeader("Registrations", true, ($_SESSION["currentUser"]->getRole() < 3), "Registrations");
     $displayName = ucwords($_SESSION["currentUser"]->getName());
     echo "<h1>Registrations:</h1>
        <h2>Hi {$displayName}, you can view and manage your registrations below!</h2>";
@@ -33,13 +33,14 @@
 
     /*BUILD EVENTS*/
     echo "<h3>Your Registered Events:</h3>";
-    $eventsTable = "<table id='events-table'><thead><tr>
+    $eventsTable = "<table id='events-table' class='table'><thead><tr>
         <td>Event ID</td>
         <td>Name</td>
         <td>Venue</td>
         <td>Start Date</td>
         <td>End Date</td>
         <td>Capacity</td>
+        <td>Registered Attendees</td>
         </tr></thead><tbody>";
 
     /*Select/option of each registered event for the user. Used to */
@@ -81,13 +82,14 @@
 
     /*BUILD SESSIONS */
     echo "<h3>Your Registered Event Sessions:</h3>";
-    $sessionsTable = "<table id='sessions-table'><thead><tr>
+    $sessionsTable = "<table id='sessions-table' class='table'><thead><tr>
         <td>Session ID</td>
         <td>Name</td>
         <td>Event</td>
         <td>Start Date</td>
         <td>End Date</td>
         <td>Capacity</td>
+        <td>Registered Attendees</td>
         </tr></thead><tbody>";
     $usersSessionSelect = "<select id='userSessions' name='userSessions'><option value ='' selected='selected' disabled>Select a Session...</option>";
     foreach($userSessions as $session) {

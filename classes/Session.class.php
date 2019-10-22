@@ -56,28 +56,38 @@
             <td>{$this->startdate}</td>
             <td>{$this->enddate}</td>
             <td>{$this->numberallowed}</td>
+            <td>{$this->getAttendeeCount()[0]}</td>
             </tr>";
+        }
+
+        function getAttendeeCount() {
+            require_once "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->getAttendeeCount($this->idsession);
         }
 
         public static function getAllSessions() {
             require "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getAllSessions();
-            $db = null;
         }
 
         public static function getSessionByID($sessionID) {
             require "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getSessionByID($sessionID);
-            $db = null;
         }
 
         public static function getSessionsByEventID($eventID) {
             require_once "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getSessionsByEventID($eventID);
-            $db = null;
+        }
+
+        public static function deleteSessionAttendee($sessionID) {
+            require_once "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->deleteSessionAttendee($sessionID);
         }
 
     }

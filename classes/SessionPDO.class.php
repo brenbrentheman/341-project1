@@ -50,5 +50,29 @@ require_once "PDODB.class.php";
             }
         }
 
+        function getAttendeeCount($sessionID) {
+            try{
+                $stmt = $this->dbh->prepare("SELECT COUNT(attendee) FROM attendee_session WHERE session = :session");
+                $stmt->execute(array("session"=>$sessionID));
+                $num = $stmt->fetch();//get rows affected
+                return $num;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        function deleteSessionAttendee($sessionID) {
+            try{
+                $stmt = $this->dbh->prepare("DELETE FROM attendee_session WHERE session = :session");
+                $stmt->execute(array("session"=>$sessionID));
+                $rows = $stmt->rowCount();//get rows affected
+                return $rows;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
     }
 ?>

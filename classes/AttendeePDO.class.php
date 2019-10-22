@@ -92,7 +92,13 @@
                 return $stmt->rowCount();//get first row
             }
             catch(PDOException $ex) {
+                //attempted to insert duplicate row
+                if($ex->getCode() == 23000){
+                    return 0;
+                } else {
                 die("There was a problem");
+            }
+
             }
         }
 

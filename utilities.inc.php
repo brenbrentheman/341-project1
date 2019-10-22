@@ -36,7 +36,18 @@
         return preg_match($reg,$value);
     }
 
+    function alphaNumericSpace($value) {
+        $reg = "/^[A-Za-z0-9 ]+$/";
+        return preg_match($reg,$value);
+    }
+
     function numeric($value) {
         $reg = "/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/";
         return preg_match($reg,$value);
+    }
+
+    /*Dates are submitted as yyyy-mm-ddd - we check for numbers and dashes */
+    function dateYYYYMMDD($value) {
+        $reg = "/^[0-9 -]+$/";
+        return( preg_match($reg,$value));
     }

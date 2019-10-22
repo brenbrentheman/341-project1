@@ -14,7 +14,7 @@
     }
     
     require_once "utilities.inc.php";
-    Header::buildHeader("All Events", false);
+    Header::buildHeader("All Events", false, ($_SESSION["currentUser"]->getRole() < 3), "Events");
     $displayName = ucwords($_SESSION["currentUser"]->getName());
     echo "<h1>Hi $displayName!</h1> 
     <h2>Here are all of our upcoming events:</h2>";
@@ -31,8 +31,8 @@
             <h3>{$event->getStartDate()} - {$event->getEndDate()}</h3>
             <h4>".Venue::getVenueByName($event->getID())."</h4>
             <h5>Maximum Participants: {$event->getNumberAllowed()}</h5>";
-        $sessionsTable = "<table><thead><tr>
-            <td>Name</td>
+        $sessionsTable = "<table class='table'><thead><tr>
+            <td>Session Name</td>
             <td>Start Date</td>
             <td>End Date</td>
             <td>Capacity</td>

@@ -46,40 +46,34 @@
             $db = new AttendeePDO();
             $attendeeID = $attendeeID === null ? $this->idattendee : $attendeeID;//work around for default paramter since you can't do $this->idattendee in the args
             return $db->unregisterEventByUserID($eventID, $attendeeID);
-            $db = null;//reset the connection
         }
 
         function unregisterSession($sessionID, $attendeeID=null) {
             $db = new AttendeePDO();
             $attendeeID = $attendeeID === null ? $this->idattendee : $attendeeID;//work around for default paramter since you can't do $this->idattendee in the args
             return $db->unregisterSessionByUserID($sessionID, $attendeeID);
-            $db = null;//reset the connection
         }
 
         function registerSession($sessionID, $attendeeID=null) {
             $db = new AttendeePDO();
             $attendeeID = $attendeeID === null ? $this->idattendee : $attendeeID;//work around for default paramter since you can't do $this->idattendee in the args
             return $db->registerSessionByUserID($sessionID, $attendeeID);
-            $db = null;//reset the connection
         }
 
         function registerEvent($eventID, $attendeeID=null) {
             $db = new AttendeePDO();
             $attendeeID = $attendeeID === null ? $this->idattendee : $attendeeID;//work around for default paramter since you can't do $this->idattendee in the args
             return $db->registerEventByUserID($eventID, $attendeeID);
-            $db = null;//reset the connection
         }
 
         public static function getAllUsers() {
             $db = new AttendeePDO();
             return $db->getAllUsers();
-            $db = null;//reset the connection
         }
 
         function getManagedEvents() {
             $db = new AttendeePDO();
             return $db->getManagedEvents($this->idattendee);
-            $db = null;//reset the connection
         }
     }
 ?>
