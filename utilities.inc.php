@@ -51,3 +51,8 @@
         $reg = "/^[0-9 -]+$/";
         return( preg_match($reg,$value));
     }
+
+    function alphabeticNumericPunct($value) {
+        $reg = "/^[A-Za-z0-9 _.,\-!?\"']+$/";
+        return( preg_match($reg,$value));
+    }

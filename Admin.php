@@ -33,6 +33,14 @@
         header("Location: Events.php");
     }
 
+    /*SETUP - basic setup for roles */
+     $roleTitle = USER_ROLE == 2 ? "Event Manager" : "Admin";
+     echo "<h2>Admin Panel</h2>
+         <h3>Your role: $roleTitle</h3><br />";
+     
+    /*Get all venues*/
+    $venues = Venue::getAllVenues();
+
     /*if user is an admin */
     if(USER_ROLE == 1) {
         /*Get all events, sessions, and users */
@@ -41,6 +49,9 @@
         
         /*Get event managers*/
         $eventManagers = Event::getAllEventManagers();
+
+        /*Admin specific functions such as user/venue CRUD is seperated out into another inc file*/
+        include "./inc/Admin_Role_Specific_Functions.inc.php";
     }
 
 
@@ -50,7 +61,7 @@
         $events = $_SESSION["currentUser"]->getManagedEvents();//get events managed by this user -- Returns an associative array
         $users = Attendee::getAllUsers();
     }
-
+    
     //sessions are build up the same for both roles
     $sessions = array();
     /*Add sessions to array that is indexed by event - We do it this way so that they are displayed in the table by event not event ID*/
@@ -58,20 +69,6 @@
         $sessions[] = Session::getSessionsByEventID($event->getID());
     } 
 
-    /*Basic setup for either role*/
-    $roleTitle = USER_ROLE == 2 ? "Event Manager" : "Admin";
-    echo "<h2>Admin Panel</h2>
-        <h3>Your role: $roleTitle</h3><br />";
-
-    /*ATTENDEES - build up users*/
-    $userSelect = "<select class='userSelect' name='selectedUser'><option value ='' selected='selected' disabled>Select an Attendee...</option>";
-    foreach($users as $user) {
-        $userSelect .= "<option value='{$user->getID()}'>{$user->getName()}</option>";
-    }
-    $userSelect .= "</select>";
-
-    /*Get all venues*/
-    $venues = Venue::getAllVenues();
     /*END SETUP*/
 
     /*EVENTS*/
@@ -115,7 +112,7 @@
     //event attendees
     $userEventSelect = buildEventSelect("user");
     echo "<div class='col-lg-12 panel panel-default'><h4>Update attendees for an event:</h4>";
-    echo "<br />" . $userSelect . $userEventSelect . "<br /><button id='add-event-user'>Register</button>" . "<button id='remove-event-user'>Unregister</button></div><br />";
+    echo "<br />" . buildUserSelect() . $userEventSelect . "<br /><button id='add-event-user'>Register</button>" . "<button id='remove-event-user'>Unregister</button></div><br />";
     
 
     echo "</form></div>";//close form
@@ -166,8 +163,8 @@
     
     //add attendees
     $userSessionSelect = buildSessionSelect("user");
-    echo "<div class='col-lg-12 panel panel-default'><h4>Add attendees to a session:</h4>";
-    echo $userSessionSelect . $userSelect . "<br /><button id='add-session-user'>Register</button>" . "<button id='remove-session-user'>Unregister</button></div><br />";
+    echo "<div class='col-lg-12 panel panel-default'><h4>Add or Remove attendees to a session:</h4>";
+    echo $userSessionSelect . buildUserSelect("-session") . "<br /><button id='add-session-user'>Register</button>" . "<button id='remove-session-user'>Unregister</button></div><br />";
 
     //close form and create space
     echo "</form></div>";
@@ -239,6 +236,16 @@
         } 
         $venueSelect .= "</select>";
         return $venueSelect;
+    }
+
+    function buildUserSelect($type=null){
+        global $users;
+        $userSelect = "<select class='userSelect' name='selectedUser$type'><option value ='' selected='selected' disabled>Select an Attendee...</option>";
+        foreach($users as $user) {
+            $userSelect .= "<option value='{$user->getID()}'>{$user->getName()}</option>";
+        }
+        $userSelect .= "</select>";
+        return $userSelect;
     }
 
     /*Add js */

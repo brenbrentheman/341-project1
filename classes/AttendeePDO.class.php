@@ -20,8 +20,44 @@
             }
         }
 
+        function insertAttendee($name, $password, $role) {
+            try {
+                $stmt = $this->dbh->prepare("INSERT INTO attendee (name, password, role) VALUES (:name, :password, :role)");
+                $stmt->execute(array("name"=>$name, "password"=>$password, "role"=>$role));
+
+                return $stmt->rowCount();//get first row
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        function updateAttendee($id,$name, $password, $role) {
+            try {
+                $stmt = $this->dbh->prepare("UPDATE attendee SET name=:name, password=:password, role=:role WHERE idattendee=:id");
+                $stmt->execute(array("name"=>$name, "password"=>$password, "role"=>$role, "id"=>$id));
+
+                return $stmt->rowCount();//get first row
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        function deleteAttendee($id) {
+            try {
+                $stmt = $this->dbh->prepare("DELETE FROM attendee WHERE idattendee=:id");
+                $stmt->execute(array("id"=>$id));
+
+                return $stmt->rowCount();//get first row
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
         function getAllEventsByID($userID) {
-            require "Event.class.php";
+            require_once "Event.class.php";
             try {
                 $stmt = $this->dbh->prepare("SELECT * FROM event JOIN attendee_event ON event.idevent = attendee_event.event WHERE attendee_event.attendee = :id");
                 $stmt->execute(array("id"=>$userID));
@@ -35,7 +71,7 @@
         }
 
         function getAllSessionsByID($userID) {
-            require "Session.class.php";
+            require_once "Session.class.php";
             try {
                 $stmt = $this->dbh->prepare("SELECT * FROM session JOIN attendee_session ON session.idsession = attendee_session.session WHERE attendee_session.attendee = :id");
                 $stmt->execute(array("id"=>$userID));

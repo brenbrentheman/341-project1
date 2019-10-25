@@ -30,7 +30,51 @@ require_once "PDODB.class.php";
                 die("There was a problem");
             }
         }
-           
+
+        //add a venue
+        function addVenue($name, $capacity) {
+            try{
+                
+                $stmt = $this->dbh->prepare("INSERT INTO venue (name, capacity) VALUES (:name, :capacity)");
+                $stmt->execute(array("name"=>$name, "capacity"=>$capacity));
+    
+                $rows = $stmt->rowCount();
+                return $rows;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+         
+        //update a venue
+        function updateVenue($id, $name, $capacity) {
+            try{
+                
+                $stmt = $this->dbh->prepare("UPDATE venue SET name=:name, capacity=:capacity WHERE idvenue=:id");
+                $stmt->execute(array("id"=>$id, "name"=>$name, "capacity"=>$capacity));
+    
+                $rows = $stmt->rowCount();
+                return $rows;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        //delete a venue
+        function deleteVenue($id) {
+            try{
+                
+                $stmt = $this->dbh->prepare("DELETE FROM venue WHERE idvenue=:id");
+                $stmt->execute(array("id"=>$id));
+    
+                $rows = $stmt->rowCount();
+                return $rows;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
 
     }
 ?>

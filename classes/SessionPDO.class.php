@@ -62,6 +62,42 @@ require_once "PDODB.class.php";
             }
         }
 
+        function insertSession($name, $event, $start, $end, $cap) {
+            try{
+                $stmt = $this->dbh->prepare("INSERT INTO session (name, numberallowed, event, startdate, enddate) VALUES (:name, :cap, :event, :start, :end)");
+                $stmt->execute(array("name"=>$name, "event"=>$event, "start"=>$start, "end"=>$end, "cap"=>$cap));
+                $rows = $stmt->rowCount();//get rows affected
+                return $rows;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        function updateSession($id, $name, $event, $start, $end, $cap) {
+            try{
+                $stmt = $this->dbh->prepare("UPDATE session SET name=:name, numberallowed=:cap, event=:event, startdate=:start, enddate=:end WHERE idsession=:id");
+                $stmt->execute(array("id"=>$id, "name"=>$name, "event"=>$event, "start"=>$start, "end"=>$end, "cap"=>$cap));
+                $rows = $stmt->rowCount();//get rows affected
+                return $rows;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
+        function deleteSession($sessionID) {
+            try{
+                $stmt = $this->dbh->prepare("DELETE FROM session WHERE idsession = :session");
+                $stmt->execute(array("session"=>$sessionID));
+                $rows = $stmt->rowCount();//get rows affected
+                return $rows;
+            }
+            catch(PDOException $ex) {
+                die("There was a problem");
+            }
+        }
+
         function deleteSessionAttendee($sessionID) {
             try{
                 $stmt = $this->dbh->prepare("DELETE FROM attendee_session WHERE session = :session");

@@ -8,14 +8,16 @@
         private $startdate;
         private $enddate;
 
-        public static function newSession($id, $sessionName, $allowed, $eventName, $start, $end) {
+        public static function newSession($sessionName, $allowed, $event, $start, $end, $id=null) {
             $session = new self;
             $session->idsession = $id;
             $session->name = $sessionName;
             $session->numberallowed = $allowed;
-            $session->event = $eventName;
+            $session->event = $event;
             $session->startdate = $start;
             $session->enddate = $end;
+
+            return $session;
         }
 
         function getID() {
@@ -60,6 +62,18 @@
             </tr>";
         }
 
+        function Post() {
+            require_once "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->insertSession($this->name, $this->event, $this->startdate, $this->enddate, $this->numberallowed);
+        }
+
+        function Put() {
+            require_once "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->updateSession($this->idsession, $this->name, $this->event, $this->startdate, $this->enddate, $this->numberallowed);
+        }
+
         function getAttendeeCount() {
             require_once "SessionPDO.class.php";
             $db = new SessionPDO();
@@ -82,6 +96,12 @@
             require_once "SessionPDO.class.php";
             $db = new SessionPDO();
             return $db->getSessionsByEventID($eventID);
+        }
+
+        public static function deleteSession($sessionID) {
+            require_once "SessionPDO.class.php";
+            $db = new SessionPDO();
+            return $db->deleteSession($sessionID);
         }
 
         public static function deleteSessionAttendee($sessionID) {

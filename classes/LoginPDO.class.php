@@ -7,7 +7,7 @@
 
         function authenticateLogin($name, $pw) {
             try {
-                $encPW = hash("sha256", sanitizeInputData($pw));
+                $encPW = hash("sha256", $pw);
                 $stmt = $this->dbh->prepare("SELECT * FROM attendee WHERE name = :name");
                 $stmt->execute(array("name"=>strtolower($name)));
                 $stmt->setFetchMode(PDO::FETCH_ASSOC);//fetch associative array

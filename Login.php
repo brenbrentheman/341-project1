@@ -22,7 +22,7 @@
         
         
         $db = new LoginPDO();
-        $isAuthenticatedUser = $db->authenticateLogin(sanitizeInputData($_POST["name"]), $_POST["password"] );
+        $isAuthenticatedUser = $db->authenticateLogin(sanitizeInputData($_POST["name"]), sanitizeInputData($_POST["password"]) );
         if($isAuthenticatedUser["authenticated"]) {
             date_default_timezone_set("US/Eastern");
             setcookie("logInTime", date("F d, Y h:i a", time()), date(time() + 600), '/');
@@ -34,7 +34,7 @@
             echo "<span>Invalid login</span>";
         }
     } else if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"]) {
-        echo "You are still logged in!";
+        header("Location: Events.php");
     }
 
     Header::buildHeader("Login", true, false, false, true);
@@ -43,7 +43,7 @@
         <h2>Login:</h2>
         <form id="login" class="form-signin" action="Login.php" method="post">
             <input type="text" class="form-control" placeholder="Name" name="name" required="" autofocus="">
-            <input type="password"class="form-control" name="password" placeholder="Password" required="" autofocus="">
+            <input type="password" class="form-control" name="password" placeholder="Password" required="">
             <input class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="Login">
         </form></div>';
     Footer::buildFooter();
